@@ -40,6 +40,26 @@ Chama relies on [Firebase](https://firebase.google.com/) to give our dealers a r
 ## Delivery
 You can create a repository in GitHub to host the assignment codebase. We need both Firebase hosting and Github repo URLs.
 
-And that's it. Happy coding! :metal:
+## Review
+
+After you delivered the completed assignment to us, we will review it as soon as we can, generally within 3 days. **We pay special attention to:**
+
+* Coding skills
+   * Writing testable code	
+   * Whether you use Redux, React, HTML and CSS properly
+* Software Engineering Skills
+   * Code organization (modularity, dependencies between modules, naming, etc)
+* Overall Feeling
+   * Software usability
+   * Assignment completion
+   * Overall code quality (edge cases, usage of tools, performance, best practices)
+   
+## Presentation
+
+If we like what we see, we'll invite you to present your solution! We have a big screen for you to present on. Don't forget your laptop!
+
+## That's it!
+
+Happy coding! :metal:
 
 <img src="https://user-images.githubusercontent.com/5693916/30273942-84252588-96fb-11e7-9420-5516b92cb1f7.gif" data-canonical-src="https://user-images.githubusercontent.com/5693916/30273942-84252588-96fb-11e7-9420-5516b92cb1f7.gif" width="150" height="150" />
