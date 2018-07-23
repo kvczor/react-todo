@@ -18,18 +18,18 @@ At Chama, our frontend stack consists of [React](https://facebook.github.io/reac
 Chama relies on [Firebase](https://firebase.google.com/) to give our dealers a real-time experience. Because of this, we require that some features of Firebase are used in this assignment. There is a free-plan (default) that supports the requirements of this assignment (Hosting, Auth and real-time Database) and you should be able to start creating a project with your own Google account.
 
 ### Must have
-* Sign-in/Sign-out functionality using [Firebase Auth](https://firebase.google.com/docs/auth/);
-* Use **[Firebase Realtime Database](https://firebase.google.com/docs/database/)** and **Redux** to keep all the TO-DO's;
-* Host your working app on the *[Firebase Hosting environment](https://firebase.google.com/docs/hosting/)*;
-* Assign priority to a TO-DO and sort them by **highest to lowest priority**;
-* Set a due time. Add real-time visual and auditive hints to the TO-DO item that indicate that the due time is near and has passed;
-* Work on Chrome.
+- [ ] Sign-in/Sign-out functionality using [Firebase Auth](https://firebase.google.com/docs/auth/);
+- [ ] Use **[Firebase Realtime Database](https://firebase.google.com/docs/database/)** and **Redux** to keep all the TO-DO's;
+- [ ] Host your working app on the *[Firebase Hosting environment](https://firebase.google.com/docs/hosting/)*;
+- [ ] Assign priority to a TO-DO and sort them by **highest to lowest priority**;
+- [ ] Set a due time. Add real-time visual and auditive hints to the TO-DO item that indicate that the due time is near and has passed;
+- [ ] Work on Chrome.
 
 ### Nice to have
-* Responsive (Mobile and Web);
-* Cross-browser support;
-* Tests (Unit and Acceptance);
-* UI following [Material Design concepts](https://material.io/)
+- [ ] Responsive (Mobile and Web);
+- [ ] Cross-browser support;
+- [ ] Tests (Unit and/or Acceptance);
+- [ ] UI following [Material Design concepts](https://material.io/)
 
 ## Hints
 * You don't need to spend time creating a dev/build environment, using [react-create-app](https://github.com/facebookincubator/create-react-app) (and other alike tools) is totally ok!
@@ -37,8 +37,10 @@ Chama relies on [Firebase](https://firebase.google.com/) to give our dealers a r
 * If you wish to spend less time writing boilerplate code, go to http://todomvc.com/, on this website, you will find many sample implementations of the same TO-DO application, every time using a different framework. You can choose the [React](http://todomvc.com/examples/react/#/) implementation as a starting point. It's OK to use the same styling as the original application.
 * Don't need to re-invent the wheel, for components like Datepickers and/or Timepicker you can use [Material-ui](https://github.com/callemall/material-ui) or any other of your choice, it has great integration with React environments.
 
-## Delivery
-You can create a repository in GitHub to host the assignment codebase. We need both Firebase hosting and Github repo URLs.
+## Instructions
+Fork this repository. You're free to edit its README, though it should preserve the must-have functionalities and stack.
+
+When you're done, share your repositoy's and Firebase hosting's URL.
 
 ## Review
 
