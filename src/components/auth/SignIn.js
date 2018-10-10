@@ -5,10 +5,7 @@ import Paper from '@material-ui/core/Paper';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
@@ -21,7 +18,6 @@ const initialState = {
     email: '',
     password: '',
     error: null,
-    isLoading: false
 };
 
 const byPropKey = (propertyName, value) => () => ({
@@ -31,7 +27,7 @@ const byPropKey = (propertyName, value) => () => ({
 const styles = theme => ({
     layout: {
         width: 'auto',
-        display: 'block', // Fix IE11 issue.
+        display: 'block',
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
         [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -52,7 +48,7 @@ const styles = theme => ({
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
-        width: '100%', // Fix IE11 issue.
+        width: '100%',
         marginTop: theme.spacing.unit,
     },
     submit: {
@@ -70,7 +66,6 @@ class SignIn extends Component {
     onSubmit = event => {
         const {email, password} = this.state;
         const {history} = this.props;
-        this.setState({isLoading: true});
 
         auth.signInWithEmailAndPassword(email, password)
             .then(() => {

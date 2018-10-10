@@ -13,6 +13,7 @@ import {firebase} from '../firebase';
 import * as routes from '../constants/routes';
 
 const PrivateRoute = ({component: Component, isAuthenticated, ...rest}) => {
+    debugger;
     return (
         <Route
             {...rest}
@@ -38,29 +39,26 @@ export class App extends Component {
         super(props);
 
         this.state = {
-            isAuthenticated: true,
-            isLoading: false
+            isAuthenticated: true
         };
     }
 
     componentDidMount() {
-        this.setState({
-            loading: true
-        });
-
         firebase.auth.onAuthStateChanged(user => {
-            if (user) {
-                this.setState({
-                    isAuthenticated: true,
-                    userInfo: user
-                });
-            } else {
+                if (user) {
+                    this.setState({
+                        isAuthenticated: true,
+                        userInfo: user
+                    });
+                    return;
+                }
+
                 this.setState({
                     isAuthenticated: false,
                     userInfo: null
                 });
             }
-        })
+        )
     }
 
     render() {
