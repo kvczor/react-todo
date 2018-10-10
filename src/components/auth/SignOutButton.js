@@ -5,4 +5,4 @@ import Button from '@material-ui/core/Button';
 
 const signOut = () => firebase.auth.signOut();
 
-export const SignOutButton = () => <Button onClick={signOut}>Sign out</Button>;
+export const SignOutButton = () => <Button onClick={signOut} color="inherit">Sign out</Button>;

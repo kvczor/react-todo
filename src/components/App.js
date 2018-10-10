@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 import SignIn from './auth/SignIn';
-import Home from './Home';
+import Todos from './Todos';
 import {firebase} from '../firebase';
 
 import * as routes from '../constants/routes';
@@ -32,6 +32,7 @@ const PrivateRoute = ({component: Component, isAuthenticated, ...rest}) => {
     );
 };
 
+
 export class App extends Component {
     constructor(props) {
         super(props);
@@ -46,16 +47,21 @@ export class App extends Component {
         this.setState({
             loading: true
         });
+
         firebase.auth.onAuthStateChanged(user => {
-            user
-                ? this.setState({
+            if (user) {
+                this.setState({
                     isAuthenticated: true,
+                    userInfo: user,
                     isLoading: false,
-                })
-                : this.setState({
+                });
+            } else {
+                this.setState({
                     isAuthenticated: false,
+                    userInfo: null,
                     isLoading: false
                 });
+            }
         })
     }
 
@@ -66,7 +72,8 @@ export class App extends Component {
                     <Switch>
                         <Route
                             path={routes.SIGN_IN}
-                            component={SignIn}/>
+                            component={SignIn}
+                        />
                         />
                         <Route
                             path={routes.SIGN_OUT}
@@ -74,8 +81,8 @@ export class App extends Component {
                         />
                         <PrivateRoute
                             isAuthenticated={this.state.isAuthenticated}
-                            component={Home}/>
-
+                            component={Todos}
+                        />
                     </Switch>
                 </div>
             </Router>

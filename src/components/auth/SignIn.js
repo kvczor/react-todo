@@ -1,25 +1,17 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import { auth } from '../../firebase/index';
+import {auth} from '../../firebase/index';
 import * as routes from '../../constants/routes';
 
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
-const INITIAL_STATE = {
+const initialState = {
     email: '',
     password: '',
     error: null,
+    isLoading: false
 };
-
-const styles = theme => ({
-    root: {
-        ...theme.mixins.gutters(),
-        paddingTop: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit * 2,
-    },
-});
 
 const byPropKey = (propertyName, value) => () => ({
     [propertyName]: value,
@@ -29,42 +21,29 @@ class SignInForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { ...INITIAL_STATE };
+        this.state = {...initialState};
     }
 
     onSubmit = event => {
-        const {
-            email,
-            password,
-        } = this.state;
-
-        const {
-            history,
-        } = this.props;
+        const {email, password} = this.state;
+        const {history} = this.props;
+        this.setState({isLoading: true});
 
         auth.signInWithEmailAndPassword(email, password)
             .then(() => {
-                this.setState({...INITIAL_STATE});
+                this.setState({...initialState});
                 history.push(routes.HOME);
             })
             .catch(error => {
-
+                this.setState(byPropKey('error', error));
             });
 
         event.preventDefault();
     };
 
     render() {
-        const {
-            email,
-            password,
-            error,
-        } = this.state;
-
-        const isInvalid =
-            password === '' ||
-            email === '';
-
+        const {email, password, error, isLoading} = this.state;
+        const isInvalid = password === '' || email === '';
         return (
             <form onSubmit={this.onSubmit}>
                 <input
@@ -79,7 +58,7 @@ class SignInForm extends Component {
                     type="password"
                     placeholder="Password"
                 />
-                <button disabled={isInvalid} type="submit">
+                <button disabled={isInvalid || isLoading} type="submit">
                     Sign In
                 </button>
 
@@ -92,9 +71,9 @@ class SignInForm extends Component {
 const SignInPage = ({history}) =>
     <div>
         <Paper>
-        <h1>SignIn</h1>
-        <SignInForm history={history}/>
+            <h1>SignIn</h1>
+            <SignInForm history={history}/>
         </Paper>
     </div>;
 
-export default withRouter(withStyles(styles)(SignInPage));
+export default withRouter(SignInPage);
