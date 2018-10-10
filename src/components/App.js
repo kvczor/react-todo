@@ -52,14 +52,12 @@ export class App extends Component {
             if (user) {
                 this.setState({
                     isAuthenticated: true,
-                    userInfo: user,
-                    isLoading: false,
+                    userInfo: user
                 });
             } else {
                 this.setState({
                     isAuthenticated: false,
-                    userInfo: null,
-                    isLoading: false
+                    userInfo: null
                 });
             }
         })
@@ -74,10 +72,6 @@ export class App extends Component {
                             path={routes.SIGN_IN}
                             component={SignIn}
                         />
-                        />
-                        <Route
-                            path={routes.SIGN_OUT}
-                            component={SignIn}/>
                         />
                         <PrivateRoute
                             isAuthenticated={this.state.isAuthenticated}

@@ -1,22 +1,15 @@
+import {FETCH_TODOS} from "../../constants/actions";
+
 const todos = (state = [], action) => {
     switch (action.type) {
-        case 'ADD_TODO': 
-            return [
-                ...state,
-                {
-                    id: action.id,
-                    name: action.name,
-                    completed: false,
-                    priority: action.priority,
-                    dueDate: action.dueDate
-                }
-            ];
-        case 'TOGGLE_TODO':
-            return state.map(todo =>
-                (todo.id === action.id)
-                    ? {...todo, completed: !todo.completed}
-                    : todo
-            );
+        case FETCH_TODOS:
+            return Object.entries(action.payload || [])
+                .map(item => {
+                    return {
+                        id: item[0],
+                        ...item[1]
+                    };
+                });
         default:
             return state
     }

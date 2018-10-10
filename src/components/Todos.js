@@ -1,13 +1,3 @@
-import React, {Component} from 'react';
-import moment from 'moment';
-import {connect} from 'react-redux';
-
-import {SignOutButton} from '../components';
-import {ENTER_KEY} from '../constants/keys';
-import {toggleTodo, addTodo} from "../store/actions";
-
-
-import {withStyles} from '@material-ui/core/styles';
 import {
     AppBar,
     Toolbar,
@@ -21,6 +11,21 @@ import {
     ListItemText,
     Checkbox
 } from '@material-ui/core';
+import {withStyles, createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import React, {Component} from 'react';
+import moment from 'moment';
+import {connect} from 'react-redux';
+
+
+import {SignOutButton} from '../components';
+import {ENTER_KEY} from '../constants/keys';
+import {toggleTodo, addTodo, fetchTodos} from "../store/actions";
+
+const theme = createMuiTheme({
+    typography: {
+        useNextVariants: true,
+    },
+});
 
 const styles = theme => ({
     root: {
@@ -107,6 +112,10 @@ class ToDoList extends Component {
         };
     }
 
+    componentDidMount() {
+        this.props.fetchTodos();
+    }
+
     handleTodoCheckboxClick = (id) => () => {
         this.props.toggleTodo(id);
     };
@@ -125,7 +134,6 @@ class ToDoList extends Component {
 
     addNewTodo = () => {
         this.setState({...newTodoInitState});
-
         this.props.addTodo({
             name: this.state.newTodoName,
             priority: this.state.newTodoPriority,
@@ -141,87 +149,90 @@ class ToDoList extends Component {
 
     render() {
         const {classes, todos} = this.props;
+        const sortedTodos = [...todos].sort((todoItem, nextTodoItem) => nextTodoItem.priority - todoItem.priority);
 
         return (
             <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <Typography variant="h6" color="inherit" className={classes.grow}>
-                            Chama To-do
-                        </Typography>
-                        <SignOutButton/>
-                    </Toolbar>
-                </AppBar>
-                <main className={classes.layout}>
-                    <Paper className={classes.paper}>
-                        <div className={classes.newTodoContainer}>
-                            <TextField
-                                id="new-todo"
-                                label="What needs to be done?"
-                                value={this.state.newTodoName}
-                                className={classes.newTodoTextField}
-                                onKeyDown={this.handleNewTodoKeyDown}
-                                onChange={this.handleChange('newTodoName')}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                            <TextField
-                                id="todo-priority"
-                                select
-                                label="Priority"
-                                value={this.state.newTodoPriority}
-                                className={classes.newTodoPriority}
-                                onChange={this.handleChange('newTodoPriority')}
-                                margin="normal"
-                                variant="outlined"
-                            >
-                                {priorities.map(option => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <TextField
-                                id="todo-due-date"
-                                label="Due date"
-                                type="date"
-                                defaultValue={this.state.newTodoDueDate}
-                                className={classes.newTodoDueDate}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                            <Button onClick={this.addNewTodo} color="primary" variant="outlined" size="large">
-                                Add To-do
-                            </Button>
-                        </div>
-                        <List>
-                            {todos
-                                .sort((todoItem, nextTodoItem) => nextTodoItem.priority - todoItem.priority)
-                                .map(todoItem => (
-                                    <ListItem
-                                        key={todoItem.id}
-                                        dense
-                                        className={classes.todoItem}
-                                    >
-                                        <Checkbox
-                                            checked={todoItem.completed}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            onChange={this.handleTodoCheckboxClick(todoItem.id)}
-                                        />
-                                        <Typography className={classes.todoItemName}
-                                                    variant="subtitle1">{todoItem.name}</Typography>
-                                        <ListItemText primary={`Priority: ${priorityMap[todoItem.priority]}`}/>
-                                        <ListItemText primary={`Due: ${todoItem.dueDate}`}/>
-                                    </ListItem>
-                                ))
-                            }
-                        </List>
-                    </Paper>
-                </main>
+                <MuiThemeProvider theme={theme}>
+                    <AppBar position="static">
+                        <Toolbar>
+                            <Typography variant="h6" color="inherit" className={classes.grow}>
+                                Chama To-do
+                            </Typography>
+                            <SignOutButton/>
+                        </Toolbar>
+                    </AppBar>
+                    <main className={classes.layout}>
+                        <Paper className={classes.paper}>
+                            <div className={classes.newTodoContainer}>
+                                <TextField
+                                    id="new-todo"
+                                    label="What needs to be done?"
+                                    value={this.state.newTodoName}
+                                    className={classes.newTodoTextField}
+                                    onKeyDown={this.handleNewTodoKeyDown}
+                                    onChange={this.handleChange('newTodoName')}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                                <TextField
+                                    id="todo-priority"
+                                    select
+                                    label="Priority"
+                                    value={this.state.newTodoPriority}
+                                    className={classes.newTodoPriority}
+                                    onChange={this.handleChange('newTodoPriority')}
+                                    margin="normal"
+                                    variant="outlined"
+                                >
+                                    {priorities.map(option => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TextField
+                                    id="todo-due-date"
+                                    label="Due date"
+                                    type="date"
+                                    defaultValue={this.state.newTodoDueDate}
+                                    className={classes.newTodoDueDate}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                                <Button onClick={this.addNewTodo} color="primary" variant="outlined" size="large">
+                                    Add To-do
+                                </Button>
+                            </div>
+                            <List>
+                                {sortedTodos
+                                    .map(todoItem => (
+                                        <ListItem
+                                            key={todoItem.id}
+                                            dense
+                                            className={classes.todoItem}
+                                        >
+                                            <Checkbox
+                                                checked={todoItem.completed}
+                                                tabIndex={-1}
+                                                disableRipple
+                                                onChange={this.handleTodoCheckboxClick(todoItem)}
+                                            />
+                                            <Typography
+                                                className={classes.todoItemName}
+                                                variant="subtitle1">{todoItem.name}</Typography>
+                                            <ListItemText primary={`Priority: ${priorityMap[todoItem.priority]}`}/>
+                                            <ListItemText primary={`Due: ${todoItem.dueDate}`}/>
+                                        </ListItem>
+                                    ))
+                                }
+                            </List>
+                        </Paper>
+                    </main>
+                </MuiThemeProvider>
             </div>
         );
 
@@ -235,7 +246,8 @@ const mapStateToProps = ({todos}) => ({
 
 const mapDispatchToProps = dispatch => ({
     addTodo: todo => dispatch(addTodo(todo)),
-    toggleTodo: id => dispatch(toggleTodo(id))
+    toggleTodo: id => dispatch(toggleTodo(id)),
+    fetchTodos: id => dispatch(fetchTodos(id))
 });
 
 export default connect(

@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/database';
 
 const config = {
     apiKey: "AIzaSyCFJbcyrNUUSS6XwFW6IMcQd3MW2Vxp1ds",
@@ -15,7 +16,11 @@ if (!firebase.apps.length) {
 }
 
 const auth = firebase.auth();
+const databaseRef = firebase.database().ref();
+const todosRef = databaseRef.child("todos");
 
 export {
-    auth
+    auth,
+    todosRef,
+    databaseRef
 }
