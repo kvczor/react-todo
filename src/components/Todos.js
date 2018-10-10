@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import moment from 'moment';
+import {connect} from 'react-redux';
+
 import {SignOutButton} from '../components';
 import {ENTER_KEY} from '../constants/keys';
-import _ from 'lodash';
-import moment from 'moment';
+import {toggleTodo, addTodo} from "../store/actions";
+
 
 import {withStyles} from '@material-ui/core/styles';
 import {
@@ -74,7 +77,7 @@ const styles = theme => ({
         paddingRight: 0,
     },
     todoItemName: {
-        flex: 5
+        flex: 1
     }
 });
 
@@ -100,19 +103,12 @@ class ToDoList extends Component {
         super();
 
         this.state = {
-            ...newTodoInitState,
-            todoList: []
+            ...newTodoInitState
         };
     }
 
     handleTodoCheckboxClick = (id) => () => {
-        this.setState(prevState => ({
-            todoList: [...prevState.todoList.map(todo =>
-                (todo.id === id)
-                    ? {...todo, completed: !todo.completed}
-                    : todo
-            )]
-        }));
+        this.props.toggleTodo(id);
     };
 
     handleNewTodoKeyDown = (event) => {
@@ -128,16 +124,13 @@ class ToDoList extends Component {
     };
 
     addNewTodo = () => {
-        this.setState(prevState => ({
-            ...newTodoInitState,
-            todoList: [...prevState.todoList, {
-                id: _.uniqueId(),
-                name: prevState.newTodoName,
-                priority: prevState.newTodoPriority,
-                dueDate: prevState.newTodoDueDate,
-                completed: true
-            }]
-        }));
+        this.setState({...newTodoInitState});
+
+        this.props.addTodo({
+            name: this.state.newTodoName,
+            priority: this.state.newTodoPriority,
+            dueDate: this.state.newTodoDueDate
+        });
     };
 
     handleChange = name => event => {
@@ -147,8 +140,7 @@ class ToDoList extends Component {
     };
 
     render() {
-        const {classes} = this.props;
-        const {todoList} = this.state;
+        const {classes, todos} = this.props;
 
         return (
             <div className={classes.root}>
@@ -206,7 +198,7 @@ class ToDoList extends Component {
                             </Button>
                         </div>
                         <List>
-                            {todoList
+                            {todos
                                 .sort((todoItem, nextTodoItem) => nextTodoItem.priority - todoItem.priority)
                                 .map(todoItem => (
                                     <ListItem
@@ -220,10 +212,8 @@ class ToDoList extends Component {
                                             disableRipple
                                             onChange={this.handleTodoCheckboxClick(todoItem.id)}
                                         />
-                                        <TextField
-                                            value={todoItem.name}
-                                            className={classes.todoItemName}
-                                        />
+                                        <Typography className={classes.todoItemName}
+                                                    variant="subtitle1">{todoItem.name}</Typography>
                                         <ListItemText primary={`Priority: ${priorityMap[todoItem.priority]}`}/>
                                         <ListItemText primary={`Due: ${todoItem.dueDate}`}/>
                                     </ListItem>
@@ -238,4 +228,17 @@ class ToDoList extends Component {
     }
 }
 
-export default withStyles(styles)(ToDoList);
+
+const mapStateToProps = ({todos}) => ({
+    todos
+});
+
+const mapDispatchToProps = dispatch => ({
+    addTodo: todo => dispatch(addTodo(todo)),
+    toggleTodo: id => dispatch(toggleTodo(id))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withStyles(styles)(ToDoList))

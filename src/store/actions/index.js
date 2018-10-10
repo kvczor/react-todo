@@ -1,9 +1,15 @@
-let nextTodoId = 0;
-export const addTodo = text => ({
-    type: 'ADD_TODO',
-    id: nextTodoId++,
-    name
-});
+import _ from "lodash";
+
+export const addTodo = ({name, priority, dueDate}) => {
+    return ({
+        type: 'ADD_TODO',
+        id: _.uniqueId(),
+        completed: false,
+        name,
+        priority,
+        dueDate
+    });
+};
 
 export const toggleTodo = id => ({
     type: 'TOGGLE_TODO',
